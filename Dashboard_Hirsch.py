@@ -23,12 +23,6 @@ def format_number(x):
             return f"{x:.2f}"
     except:
         return str(x)
-    
-    # Fonction pour supprimer les heures des index de date
-def clean_index(df):
-    df_clean = df.copy()
-    df_clean.index = pd.to_datetime(df_clean.index).normalize()  # met l’heure à 00:00
-    return df_clean
 
 # Configuration de la page
 st.set_page_config(
@@ -1241,14 +1235,9 @@ elif st.session_state.page == 'equity_suite':
 
                     st.markdown("#### Last observations")
 
-                    hist_clean= clean_index(hist)
-                    last_obs = hist_clean.tail(5)[["Open", "High", "Low", "Close", "Volume"]]
-                    
-                    st.markdown(
-                        "<div class='dataframe-container'>"
-                        + last_obs.to_html(classes='table table-striped', border=0)
-                        + "</div>", unsafe_allow_html=True
-                        )
+                    st.markdown( "<div class='dataframe-container'>" 
+                                + hist.tail(5)[["Open", "High", "Low", "Close", "Volume"]].to_html(classes='table table-striped', border=0) 
+                                + "</div>", unsafe_allow_html=True)
                 
                     info = tk.info
                     st.markdown("#### Key Information")
