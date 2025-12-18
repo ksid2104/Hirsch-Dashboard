@@ -169,17 +169,10 @@ div[data-testid="stTextInput"] input {
 }
 
 /* =================== DataFrame =================== */
-.dataframe-container table {
-    background-color: #0A1929 !important; /* fond du tableau */
-    color: white !important;               /* texte */
-    border-collapse: collapse;             /* évite les doubles bordures */
-}
-
-.dataframe-container th, 
-.dataframe-container td {
-    border: 2px solid white !important;   /* bordures plus épaisses */
-    padding: 5px;
-    text-align: right;
+.css-1lcbmhc, .css-1lcbmhc td, .css-1lcbmhc th {
+    background-color: #0A1929 !important;
+    color: white !important;
+    border: 2px solid white !important;
 }
 
 /* =================== Dividers =================== */
