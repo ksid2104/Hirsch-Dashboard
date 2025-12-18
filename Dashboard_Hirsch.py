@@ -385,10 +385,10 @@ st.markdown("---")
 
 # ========== SIDEBAR (attention à la lisibilité du champ avec les couleurs d'ecriture) ==========
 with st.sidebar:
-    st.markdown("###Filtres Généraux")
+    st.markdown("#### Filtres Généraux")
     
     # Période d'analyse 
-    st.markdown("#### 📅 Période d'analyse")
+    st.markdown("#### 📅 Analysis Period")
     period_options = {
         '1 Jour': '1d',
         '5 Jours': '5d',
@@ -403,7 +403,7 @@ with st.sidebar:
         'Max': 'max'
     }
     selected_period_label = st.selectbox(
-        "Période",
+        "Period",
         list(period_options.keys()),
         index=2,
         label_visibility="collapsed"
@@ -415,10 +415,10 @@ with st.sidebar:
     # Avertissements
     st.markdown("""
     <div class='info-box'>
-        <p><strong>⚠️ Fréquences de mise à jour :</strong></p>
-        <p>• GDP : Données trimestrielles</p>
-        <p>• CPI : Données mensuelles</p>
-        <p>• Obligations : Données mensuelles</p>
+        <p><strong>⚠️ Update frequencies:</strong></p>
+        <p>• GDP: Quarterly data</p>
+        <p>• CPI: Monthly data</p>
+        <p>• Bonds: Monthly data</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -515,7 +515,7 @@ elif st.session_state.page == 'gdp_cpi':
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### Variation du GDP")
+        st.markdown("### GDP Variations")
         
         # Préparer les données pour le graphique
         gdp_countries = list(gdp_variations.keys())
@@ -555,7 +555,7 @@ elif st.session_state.page == 'gdp_cpi':
         st.plotly_chart(fig, use_container_width=True)
     
     with col2:
-        st.markdown("### Variation du CPI")
+        st.markdown("### CPI Variations")
         
         # Préparer les données pour le graphique
         cpi_countries = list(cpi_variations.keys())
@@ -641,10 +641,10 @@ elif st.session_state.page == 'gdp_cpi':
 
     
     # Line chart GDP normalisé
-    st.markdown("### PIB Normalisé (Base 100)")
+    st.markdown("### Normalized GDP (Base 100)")
     st.markdown("""
     <div class='info-box'>
-        <p><strong>💡 Lecture du graphique :</strong> Ce graphique normalise le PIB de chaque pays à 100 au départ pour faciliter la comparaison des trajectoires de croissance. Une ligne montante indique une croissance plus rapide.</p>
+        <p><strong>💡 Graphic reading :</strong> This chart normalizes the GDP of each country to 100 at the start to facilitate comparison of growth trajectories. An upward line indicates faster growth.</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -663,7 +663,7 @@ elif st.session_state.page == 'gdp_cpi':
     
     fig.update_layout(
         xaxis_title="Date",
-        yaxis_title="PIB indexé (Base 100)",
+        yaxis_title="Normalized GDP (Base 100)",
         hovermode='x unified',
         plot_bgcolor='#0A1929',
         paper_bgcolor='#0A1929',
@@ -678,7 +678,7 @@ elif st.session_state.page == 'gdp_cpi':
     
     st.markdown("""
     <div class='info-box'>
-        <p>📌 <strong>Note :</strong> GDP mis à jour trimestriellement | CPI mis à jour mensuellement</p>
+        <p>📌 <strong>Note :</strong> GDP updated quarterly | CPI updated monthly</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -694,23 +694,23 @@ elif st.session_state.page == 'forex_commodities':
     
     st.markdown("""
     <div class='info-box'>
-        <p><strong>💡 Comment interpréter ces données :</strong></p>
-        <p>• <strong>Forex</strong> : Taux de change entre devises. Une hausse de l'EURUSD signifie que l'euro se renforce face au dollar.</p>
-        <p>• <strong>Gold</strong> : Valeur refuge en période d'incertitude. Monte généralement quand les marchés sont volatils.</p>
-        <p>• <strong>Oil</strong> : Indicateur de l'activité économique mondiale. Une hausse peut signaler une forte demande ou des tensions géopolitiques.</p>
+        <p><strong>💡 How to interpret these data :</strong></p>
+        <p>• <strong>Forex</strong> : Exchange rates between currencies. An increase in EURUSD means the euro strengthens against the dollar.</p>
+        <p>• <strong>Gold</strong> : Safe-haven asset during uncertainty. Rises generally when markets are volatile.</p>
+        <p>• <strong>Oil</strong> : Indicator of global economic activity. A rise can signal strong demand or geopolitical tensions.</p>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("---")
-    st.markdown("#### 🌍 Sélection des pays pour le Forex")
+    st.markdown("#### 🌍 Selection of countries for Forex")
     forex_countries = st.multiselect(
-    "Choisir les pays pour le Forex",
+    "Choose countries for Forex",
     ['USA', 'France', 'Germany', 'UK', 'China', 'Japan'],
     default=['USA', 'France', 'Germany']
 )
     
     # 1. FOREX
-    st.markdown("### Taux de Change")
+    st.markdown("### Exchange Rate")
     
     # Déterminer les paires forex nécessaires
     forex_pairs = get_required_forex_pairs(forex_countries)
@@ -738,7 +738,7 @@ elif st.session_state.page == 'forex_commodities':
         st.markdown("---")
         
         # Line chart évolution
-        st.markdown("#### Évolution des taux de change")
+        st.markdown("#### Exchange Rate Evolution")
         
         fig = go.Figure()
         colors = ['#4FC3F7', '#2196F3', '#1976D2', '#0D47A1', '#FF6B6B']
@@ -754,7 +754,7 @@ elif st.session_state.page == 'forex_commodities':
         
         fig.update_layout(
             xaxis_title="Date",
-            yaxis_title="Taux",
+            yaxis_title="Exchange Rate",
             hovermode='x unified',
             plot_bgcolor='#0A1929',
             paper_bgcolor='#0A1929',
@@ -767,25 +767,25 @@ elif st.session_state.page == 'forex_commodities':
         
         st.plotly_chart(fig, use_container_width=True)
     else:
-        st.info("Sélectionnez des pays dans la sidebar pour afficher les taux de change")
+        st.info("Select countries in the sidebar to display exchange rates")
     
     st.markdown("---")
     
     # 2. COMMODITIES
-    st.markdown("### 🏆 Matières Premières")
+    st.markdown("### 🏆 Commodities")
     
     commodities = get_commodities_data(selected_period)
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("#### Gold (XAUUSD)")
+        st.markdown("#### Gold")
         
         gold = commodities['Gold']
         gold_var = gold.pct_change().iloc[-1] * 100
         
         st.metric(
-            "Prix de l'or",
+            "Gold Price",
             f"${gold.iloc[-1]:,.2f}",
             f"{gold_var:+.2f}%"
         )
@@ -802,7 +802,7 @@ elif st.session_state.page == 'forex_commodities':
         
         fig.update_layout(
             xaxis_title="Date",
-            yaxis_title="Prix (USD)",
+            yaxis_title="Price (USD)",
             plot_bgcolor='#0A1929',
             paper_bgcolor='#0A1929',
             font=dict(color='white'),
@@ -821,7 +821,7 @@ elif st.session_state.page == 'forex_commodities':
         oil_var = oil.pct_change().iloc[-1] * 100
         
         st.metric(
-            "Prix du pétrole",
+            "Oil Price",
             f"${oil.iloc[-1]:,.2f}",
             f"{oil_var:+.2f}%"
         )
@@ -838,7 +838,7 @@ elif st.session_state.page == 'forex_commodities':
         
         fig.update_layout(
             xaxis_title="Date",
-            yaxis_title="Prix (USD)",
+            yaxis_title="Price (USD)",
             plot_bgcolor='#0A1929',
             paper_bgcolor='#0A1929',
             font=dict(color='white'),
@@ -854,26 +854,26 @@ elif st.session_state.page == 'forex_commodities':
 elif st.session_state.page == 'rates_bonds':
     col1, col2 = st.columns([6, 1])
     with col1:
-        st.markdown("## Taux & Obligations")
+        st.markdown("## Rates & Bonds")
     with col2:
-        if st.button("Retour", use_container_width=True):
+        if st.button("Back", use_container_width=True):
             st.session_state.page = 'home'
             st.rerun()
     
     st.markdown("""
     <div class='info-box'>
-        <p><strong>💡 Comment interpréter ces données :</strong></p>
-        <p>• <strong>Taux directeurs</strong> : Fixés par les banques centrales pour contrôler l'inflation. Une hausse rend le crédit plus cher et ralentit l'économie.</p>
-        <p>• <strong>Obligations 10Y</strong> : Taux de rendement des obligations gouvernementales. Un taux élevé indique plus de risque perçu ou des anticipations d'inflation.</p>
-        <p>• <strong>Spreads</strong> : Différence de taux entre pays. Un spread élevé indique plus de risque relatif.</p>
-        <p>• <strong>Yield Curve</strong> : Courbe des rendements selon les maturités. Une courbe inversée (court terme > long terme) peut signaler une récession.</p>
+        <p><strong>💡 How to interpret these data :</strong></p>
+        <p>• <strong>Interest rates</strong> : Set by central banks to control inflation. An increase makes credit more expensive and slows the economy.</p>
+        <p>• <strong>Bonds 10Y</strong> : Yield of government bonds. A high yield indicates more perceived risk or inflation expectations.</p>
+        <p>• <strong>Spreads</strong> : Difference in interest rates between countries. A high spread indicates higher relative risk.</p>
+        <p>• <strong>Yield Curve</strong> : Curve of returns based on maturity. An inverted curve (short-term > long-term) may signal a recession.</p>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("---")
     
     # 1. TAUX DIRECTEURS
-    st.markdown("### Taux d'intérêt directeurs")
+    st.markdown("### Interest Rates")
     
     rates = get_interest_rates()
     
@@ -885,7 +885,7 @@ elif st.session_state.page == 'rates_bonds':
         fed_rate = rates['US_Fed']
         
         st.metric(
-            "Taux actuel",
+            "Current Rate",
             f"{fed_rate.iloc[-1]:.2f}%",
             f"{fed_rate.pct_change().iloc[-1]:+.2f}%"
         )
@@ -902,7 +902,7 @@ elif st.session_state.page == 'rates_bonds':
         
         fig.update_layout(
             xaxis_title="Date",
-            yaxis_title="Taux (%)",
+            yaxis_title="Rate (%)",
             plot_bgcolor='#0A1929',
             paper_bgcolor='#0A1929',
             font=dict(color='white'),
@@ -920,7 +920,7 @@ elif st.session_state.page == 'rates_bonds':
         ecb_rate = rates['Euro_ECB']
         
         st.metric(
-            "Taux actuel",
+            "Current Rate",
             f"{ecb_rate.iloc[-1]:.2f}%",
             f"{ecb_rate.pct_change().iloc[-1]:+.2f}%"
         )
@@ -937,7 +937,7 @@ elif st.session_state.page == 'rates_bonds':
         
         fig.update_layout(
             xaxis_title="Date",
-            yaxis_title="Taux (%)",
+            yaxis_title="Rate (%)",
             plot_bgcolor='#0A1929',
             paper_bgcolor='#0A1929',
             font=dict(color='white'),
@@ -952,12 +952,12 @@ elif st.session_state.page == 'rates_bonds':
     st.markdown("---")
     
     # 2. OBLIGATIONS SOUVERAINES
-    st.markdown("### Obligations Gouvernementales 10 Ans")
+    st.markdown("### Government Bonds 10 Years")
     
     # Filtrer les pays pour les obligations
-    st.markdown("#### 🌍 Sélection des pays pour les obligations")
+    st.markdown("#### 🌍 SSelection of countries for bonds")
     bond_countries = st.multiselect(
-    "Choisir les pays",
+    "Choose countries",
     ['USA', 'Germany', 'France', 'UK', 'Japan'],
     default=['USA', 'Germany', 'France'])
     
@@ -990,7 +990,7 @@ elif st.session_state.page == 'rates_bonds':
         st.markdown("---")
         
         # Yield Curve (USA par défaut)
-        st.markdown("#### Courbe des taux (USA)")
+        st.markdown("#### Yield Curve (USA)")
         
         yield_curve_data = get_yield_curve('USA')
         
@@ -1010,8 +1010,8 @@ elif st.session_state.page == 'rates_bonds':
             ))
             
             fig.update_layout(
-                xaxis_title="Maturité",
-                yaxis_title="Rendement (%)",
+                xaxis_title="Maturity",
+                yaxis_title="Yield (%)",
                 plot_bgcolor='#0A1929',
                 paper_bgcolor='#0A1929',
                 font=dict(color='white'),
@@ -1026,7 +1026,7 @@ elif st.session_state.page == 'rates_bonds':
         st.markdown("---")
         
         # Graphique comparatif des obligations
-        st.markdown("#### Comparaison des taux 10Y")
+        st.markdown("#### Comparison of 10Y Rates")
         
         fig = go.Figure()
         colors = ['#4FC3F7', '#2196F3', '#1976D2', '#0D47A1', '#FF6B6B']
@@ -1042,7 +1042,7 @@ elif st.session_state.page == 'rates_bonds':
         
         fig.update_layout(
             xaxis_title="Date",
-            yaxis_title="Rendement (%)",
+            yaxis_title="Yield (%)",
             hovermode='x unified',
             plot_bgcolor='#0A1929',
             paper_bgcolor='#0A1929',
@@ -1058,17 +1058,17 @@ elif st.session_state.page == 'rates_bonds':
         st.markdown("---")
         
         # Sélecteur de spreads
-        st.markdown("#### Analyse des Spreads")
+        st.markdown("#### Analysis of Spreads")
         
         if len(bond_summary) >= 2:
             col1, col2 = st.columns(2)
             
             with col1:
-                country1 = st.selectbox("Pays 1", list(bond_summary.keys()), index=0)
+                country1 = st.selectbox("Country 1", list(bond_summary.keys()), index=0)
             
             with col2:
                 other_countries = [c for c in bond_summary.keys() if c != country1]
-                country2 = st.selectbox("Pays 2", other_countries, index=0 if other_countries else None)
+                country2 = st.selectbox("Country 2", other_countries, index=0 if other_countries else None)
             
             if country1 and country2:
                 spread = bond_summary[country2]['value'] - bond_summary[country1]['value']
@@ -1082,7 +1082,7 @@ elif st.session_state.page == 'rates_bonds':
                     <h3 style='color: white; margin-bottom: 10px;'>Spread {country2} - {country1}</h3>
                     <h1 style='color: #4FC3F7; margin: 0;'>{spread_color} {spread:+.2f} bps</h1>
                     <p style='color: #B0BEC5; margin-top: 10px; font-size: 0.9em;'>
-                        Le taux {country2} est {'supérieur' if spread > 0 else 'inférieur'} au taux {country1}
+                        The rate {country2} is {'higher' if spread > 0 else 'lower'} than the rate {country1}
                     </p>
                 </div>
                 """, unsafe_allow_html=True)
@@ -1117,11 +1117,11 @@ elif st.session_state.page == 'rates_bonds':
                     
                     st.plotly_chart(fig, use_container_width=True)
     else:
-        st.info("Sélectionnez des pays dans la sidebar pour afficher les données d'obligations")
+        st.info("Select countries in the sidebar to display bond rates")
     
     st.markdown("""
     <div class='info-box'>
-        <p>📌 <strong>Note :</strong> Les données de taux souverains sont mises à jour mensuellement</p>
+        <p>📌 <strong>Note :</strong> The sovereign rates data is updated monthly</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1130,17 +1130,17 @@ elif st.session_state.page == 'equity_suite':
 
     col1, col2 = st.columns([6, 1])
     with col1:
-        st.markdown("## Equity Analysis Suite")
+        st.markdown("## Equity Analysis Toolkit")
     with col2:
-        if st.button("Retour", use_container_width=True):
+        if st.button("Back", use_container_width=True):
             st.session_state.page = 'home'
             st.rerun()
 
     st.markdown("""
     <div class='info-box'>
         <p>
-        Analyse complète d’un actif financier : évolution du prix, corrélations
-        et états financiers. Sélectionnez un ticker pour commencer.
+        Complete equity analysis: price evolution, correlations
+        and financial statements. Select a ticker to begin.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -1166,14 +1166,14 @@ elif st.session_state.page == 'equity_suite':
         ).upper().strip()
 
         if ticker == "":
-            st.info("Entrez un ticker pour afficher l’analyse du prix.")
+            st.info("Enter a ticker to display the price analysis.")
         else:
             try:
                 tk = yf.Ticker(ticker)
                 hist = tk.history(period=selected_period)
 
                 if hist.empty:
-                    st.warning("Ticker invalide ou données indisponibles.")
+                    st.warning("Ticker invalid or data unavailable.")
                 else:
                     colA, colB = st.columns(2)
 
@@ -1181,14 +1181,14 @@ elif st.session_state.page == 'equity_suite':
                     perf = (last_price / hist["Close"].iloc[0] - 1) * 100
 
                     with colA:
-                        st.metric("Dernier prix", f"{last_price:.2f}")
+                        st.metric("Last Price", f"{last_price:.2f}")
                     with colB:
-                        st.metric(f"Performance sur {selected_period_label}", f"{perf:+.2f}%")
+                        st.metric(f"Performance over {selected_period_label}", f"{perf:+.2f}%")
 
                     fig = px.line(
                         hist,
                         y="Close",
-                        title=f"{ticker} – Evolution du cours sur {selected_period_label}"
+                        title=f"{ticker} Performance over {selected_period_label}"
                     )
 
                     fig.update_layout(
@@ -1202,29 +1202,77 @@ elif st.session_state.page == 'equity_suite':
 
                     st.plotly_chart(fig, use_container_width=True)
 
-                    st.markdown("#### Dernières observations")
+                    st.markdown("#### Last observations")
                     st.dataframe(
                         hist.tail(5)[["Open", "High", "Low", "Close", "Volume"]],
                         use_container_width=True
                     )
 
                     info = tk.info
-                    st.markdown("#### Informations clés")
+                    st.markdown("#### Key Information")
 
-                    st.markdown(f"""
-                    <div class='info-box'>
-                        <p><strong>Secteur :</strong> {info.get("sector", "N/A")}</p>
-                        <p><strong>Industrie :</strong> {info.get("industry", "N/A")}</p>
-                        <p><strong>Market Cap :</strong> {info.get("marketCap", "N/A")}</p>
-                        <p><strong>Beta :</strong> {info.get("beta", "N/A")}</p>
-                        <p><strong>PER :</strong> {info.get("trailingPE", "N/A")}</p>
-                        <p><strong>Dividend Yield :</strong> {info.get("dividendYield", "N/A")}</p>
-                        <p><strong>EPS :</strong> {info.get("trailingEps", "N/A")}</p>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    col1, col2 = st.columns(2)
 
+                    with col1:
+
+                        with st.expander("Business & Identity", expanded=True):
+                            st.write(f"**Sector:** {info.get('sector', 'N/A')}")
+                            st.write(f"**Industry:** {info.get('industry', 'N/A')}")
+                            st.write(f"**Currency:** {info.get('currency', 'N/A')}")
+                            st.write(info.get("longBusinessSummary", "N/A"))
+
+                        with st.expander("Valuation"):
+                            st.metric("Trailing P/E", info.get("trailingPE", "N/A"))
+                            st.metric("Forward P/E", info.get("forwardPE", "N/A"))
+                            st.metric("Price to Book", info.get("priceToBook", "N/A"))
+                            st.metric("Price to Sales (TTM)", info.get("priceToSalesTrailing12Months", "N/A"))
+                            st.metric("Enterprise Value", info.get("enterpriseValue", "N/A"))
+                            st.metric("EV / Revenue", info.get("enterpriseToRevenue", "N/A"))
+                            st.metric("EV / EBITDA", info.get("enterpriseToEbitda", "N/A"))
+                            st.metric("PEG Ratio", info.get("trailingPegRatio", "N/A"))
+
+                        with st.expander("Growth"):
+                            st.metric("Revenue Growth", info.get("revenueGrowth", "N/A"))
+                            st.metric("Earnings Growth", info.get("earningsGrowth", "N/A"))
+                            st.metric("Earnings QoQ Growth", info.get("earningsQuarterlyGrowth", "N/A"))
+
+                    with col2:
+
+                        with st.expander("Profitability"):
+                            st.metric("Gross Margin", info.get("grossMargins", "N/A"))
+                            st.metric("Operating Margin", info.get("operatingMargins", "N/A"))
+                            st.metric("EBITDA Margin", info.get("ebitdaMargins", "N/A"))
+                            st.metric("ROE", info.get("returnOnEquity", "N/A"))
+                            st.metric("ROA", info.get("returnOnAssets", "N/A"))
+                            st.metric("Profit Margin", info.get("profitMargins", "N/A"))
+
+                        with st.expander("Cash Flow & Balance Sheet"):
+                            st.metric("Total Revenue", info.get("totalRevenue", "N/A"))
+                            st.metric("EBITDA", info.get("ebitda", "N/A"))
+                            st.metric("Free Cash Flow", info.get("freeCashflow", "N/A"))
+                            st.metric("Operating Cash Flow", info.get("operatingCashflow", "N/A"))
+                            st.metric("Total Debt", info.get("totalDebt", "N/A"))
+                            st.metric("Total Cash", info.get("totalCash", "N/A"))
+                            st.metric("Debt to Equity", info.get("debtToEquity", "N/A"))
+                            st.metric("Current Ratio", info.get("currentRatio", "N/A"))
+                            st.metric("Quick Ratio", info.get("quickRatio", "N/A"))
+
+                        with st.expander("Market Sentiment"):
+                            st.metric("Target Low", info.get("targetLowPrice", "N/A"))
+                            st.metric("Target Mean", info.get("targetMeanPrice", "N/A"))
+                            st.metric("Target High", info.get("targetHighPrice", "N/A"))
+                            st.write(f"**Recommendation:** {info.get('recommendationKey', 'N/A')}")
+                            st.metric("Recommendation Mean", info.get("recommendationMean", "N/A"))
+                            st.metric("# Analysts", info.get("numberOfAnalystOpinions", "N/A"))
+
+                        with st.expander("Governance & Risk"):
+                            st.metric("Overall Risk", info.get("overallRisk", "N/A"))
+                            st.metric("Audit Risk", info.get("auditRisk", "N/A"))
+                            st.metric("Board Risk", info.get("boardRisk", "N/A"))
+                            st.metric("Compensation Risk", info.get("compensationRisk", "N/A"))
+                            st.metric("Shareholder Rights Risk", info.get("shareHolderRightsRisk", "N/A"))
             except Exception:
-                st.error("Erreur lors du chargement des données du ticker.")
+                st.error("Error loading ticker data.")
 
     # =====================================================
     # 2) CORRELATION HEATMAP
@@ -1235,8 +1283,8 @@ elif st.session_state.page == 'equity_suite':
         st.markdown("""
         <div class='info-box'>
             <p>
-            Analyse des corrélations entre plusieurs actifs sur 1 an.
-            Entrez au moins deux tickers séparés par des virgules.
+            Analysis of correlations between several assets over 1 year.
+            Enter at least two tickers separated by commas.
             </p>
         </div>
         """, unsafe_allow_html=True)
