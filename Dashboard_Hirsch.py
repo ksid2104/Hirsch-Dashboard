@@ -169,9 +169,14 @@ div[data-testid="stTextInput"] input {
 }
 
 /* =================== Dataframe =================== */
-.stDataFrame {
-    background-color: #132F4C;
-    color: #FFFFFF !important;
+.dataframe-container .css-1lcbmhc {
+    background-color: #0A1929 !important; /* fond du tableau */
+    color: white !important;              /* texte */
+}
+
+.dataframe-container .css-1lcbmhc td, 
+.dataframe-container .css-1lcbmhc th {
+    border: 1px solid white !important;   /* bordure des cellules */
 }
 
 /* =================== Dividers =================== */
@@ -1219,11 +1224,12 @@ elif st.session_state.page == 'equity_suite':
                     st.plotly_chart(fig, use_container_width=True)
 
                     st.markdown("#### Last observations")
-                    st.dataframe(
-                        hist.tail(5)[["Open", "High", "Low", "Close", "Volume"]],
-                        use_container_width=True
-                    )
-
+                    
+                    st.markdown(
+                        "<div class='dataframe-container'>"
+                        + hist.tail(5)[["Open", "High", "Low", "Close", "Volume"]].to_html(classes='table table-striped', border=0)
+                        + "</div>", unsafe_allow_html=True)
+                
                     info = tk.info
                     st.markdown("#### Key Information")
 
@@ -1388,6 +1394,8 @@ elif st.session_state.page == 'equity_suite':
             for col in df_formatted.columns:
                 df_formatted[col] = df_formatted[col].apply(format_number)
             return df_formatted
+        
+        st.markdown("""<div class='dataframe-container'>""")
 
         if ticker_fs == "":
             st.info("Entrez un ticker pour afficher les états financiers.")
