@@ -27,7 +27,7 @@ def format_number(x):
     # Fonction pour supprimer les heures des index de date
 def clean_index(df):
     df_clean = df.copy()
-    df_clean.index = pd.to_datetime(df_clean.index).date
+    df_clean.index = pd.to_datetime(df_clean.index).normalize()  # met l’heure à 00:00
     return df_clean
 
 # Configuration de la page
