@@ -169,10 +169,23 @@ div[data-testid="stTextInput"] input {
 }
 
 /* =================== DataFrame =================== */
-.css-1lcbmhc, .css-1lcbmhc td, .css-1lcbmhc th {
-    background-color: #0A1929 !important;
-    color: white !important;
-    border: 2px solid white !important;
+.dataframe-container table {
+    background-color: #0A1929 !important; /* fond du tableau */
+    color: white !important;              /* texte */
+    border-collapse: collapse;            /* éviter double bordures */
+    width: 100%;                          /* occuper toute la largeur */
+}
+
+.dataframe-container th, 
+.dataframe-container td {
+    border: 2px solid white !important;   /* bordures plus visibles */
+    padding: 5px;
+    text-align: right;                     /* aligner chiffres à droite */
+}
+
+.dataframe-container th {
+    background-color: #0A1929 !important; /* même fond pour header */
+    font-weight: bold;
 }
 
 /* =================== Dividers =================== */
@@ -1390,8 +1403,27 @@ elif st.session_state.page == 'equity_suite':
             for col in df_formatted.columns:
                 df_formatted[col] = df_formatted[col].apply(format_number)
             return df_formatted
-        
-        st.markdown("""<div class='dataframe-container'>""")
+
+        # Injecte le CSS pour styliser le tableau HTML
+        st.markdown("""
+        <style>
+        .dataframe-container table {
+            background-color: #0A1929 !important;
+            color: white !important;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .dataframe-container th, .dataframe-container td {
+            border: 2px solid white !important;
+            padding: 5px;
+            text-align: right;
+        }
+        .dataframe-container th {
+            background-color: #0A1929 !important;
+            font-weight: bold;
+        }
+        </style>
+        """, unsafe_allow_html=True)
 
         if ticker_fs == "":
             st.info("Entrez un ticker pour afficher les états financiers.")
@@ -1411,7 +1443,9 @@ elif st.session_state.page == 'equity_suite':
                 else:
                     # Formater les nombres pour l'affichage
                     fs_formatted = format_fs_numbers(fs)
-                    st.dataframe(fs_formatted, use_container_width=True)
+                    st.markdown("<div class='dataframe-container'>", unsafe_allow_html=True)
+                    st.markdown(fs_formatted.to_html(), unsafe_allow_html=True)
+                    st.markdown("</div>", unsafe_allow_html=True)
 
                     # Bouton de téléchargement CSV
                     st.download_button(
