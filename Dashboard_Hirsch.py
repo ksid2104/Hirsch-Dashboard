@@ -128,14 +128,14 @@ h1, h2, h3, h4, h5, h6, p, span, div, label {
 }
 
 /* =================== Selectbox =================== */
-/* Uniformiser le fond de tous les selectbox, sidebar incluse */
 div[data-testid="stSelectbox"] label,
 div[data-testid="stSidebar"] div[data-testid="stSelectbox"] label {
     color: #FFFFFF !important;
     font-weight: bold;
 }
-div[data-testid="stSelectbox"] div[role="combobox"],
-div[data-testid="stSidebar"] div[data-testid="stSelectbox"] div[role="combobox"] {
+div[data-testid="stSelectbox"] > div[role="combobox"],
+div[data-testid="stSidebar"] div[data-testid="stSelectbox"] > div[role="combobox"],
+div[data-baseweb="select"] {
     color: #FFFFFF !important;
     background-color: #132F4C !important;
     border-radius: 8px !important;
@@ -415,7 +415,7 @@ st.markdown("---")
 
 # ========== SIDEBAR (attention à la lisibilité du champ avec les couleurs d'ecriture) ==========
 with st.sidebar:
-    st.markdown("#### Filtres Généraux")
+    st.markdown("#### Sidebar Settings")
     
     # Période d'analyse 
     st.markdown("#### 📅 Analysis Period")
@@ -459,8 +459,8 @@ if 'page' not in st.session_state:
 
 # Page d'accueil avec les cards cliquables
 if st.session_state.page == 'home':
-    st.markdown("## Dashboard Principal")
-    st.markdown("Sélectionnez une section pour explorer les données macroéconomiques")
+    st.markdown("## Home Page")
+    st.markdown("### Select a section to explore:")
     
     col1, col2, col3 = st.columns(3)
     
@@ -470,7 +470,7 @@ if st.session_state.page == 'home':
             st.rerun()
         st.markdown("""
         <div class='info-box'>
-            <p>Analyse de la croissance économique et de l'inflation par pays</p>
+            <p>Analyze economic growth and inflation by country</p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -480,17 +480,17 @@ if st.session_state.page == 'home':
             st.rerun()
         st.markdown("""
         <div class='info-box'>
-            <p>Évolution des taux de change et matières premières</p>
+            <p>Evolution of exchange rates and commodities</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col3:
-        if st.button("Taux & Obligations", use_container_width=True, key="btn_rates"):
+        if st.button("Rates & Bonds", use_container_width=True, key="btn_rates"):
             st.session_state.page = 'rates_bonds'
             st.rerun()
         st.markdown("""
         <div class='info-box'>
-            <p>Taux directeurs et obligations souveraines</p>
+            <p>Interest rates and sovereign bonds</p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -502,7 +502,7 @@ if st.session_state.page == 'home':
             st.rerun()
         st.markdown("""
         <div class='info-box'>
-             <p>Analyse complète d’un ticker, corrélations et états financiers</p>
+             <p>Complete analysis of a ticker, correlations and financial statements</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -513,25 +513,25 @@ elif st.session_state.page == 'gdp_cpi':
     with col1:
         st.markdown("## GDP,CPI & Unemployment Rate")
     with col2:
-        if st.button("Retour", use_container_width=True):
+        if st.button("Back", use_container_width=True):
             st.session_state.page = 'home'
             st.rerun()
     
     st.markdown("""
     <div class='info-box'>
-        <p><strong>💡 Comment interpréter ces données :</strong></p>
-        <p>• <strong>GDP (Produit Intérieur Brut)</strong> : Mesure la croissance économique d'un pays. Une hausse indique une expansion, une baisse une contraction.</p>
-        <p>• <strong>CPI (Consumer Price Index)</strong> : Mesure l'inflation. Une hausse indique une augmentation des prix à la consommation.</p>
-        <p>• <strong>Unemployment Rate</strong> : Mesure le taux de chômage. Une hausse indique une augmentation du nombre de chômeurs.</p>
-        <p>• <strong>QoQ</strong> = Variation par rapport au trimestre précédent | <strong>YoY</strong> = Variation sur 1 an</p>
-        <p>• <strong>MoM</strong> = Variation par rapport au mois précédent</p>
+        <p><strong>💡 How to interpret these data :</strong></p>
+        <p>• <strong>GDP (Gross)</strong> : Measures the economic growth of a country. An increase indicates expansion, a decrease contraction.</p>
+        <p>• <strong>CPI (Consumer Price Index)</strong> : Measures inflation. An increase indicates a rise in consumption prices.</p>
+        <p>• <strong>Unemployment Rate</strong> : Measures the unemployment rate. An increase indicates a rise in the number of unemployed people.</p>
+        <p>• <strong>QoQ</strong> = Variation compared to the previous quarter | <strong>YoY</strong> = Variation over 1 year</p>
+        <p>• <strong>MoM</strong> = Variation compared to the previous month</p>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("---")
-    st.markdown("#### 🌍 Sélection des pays")
+    st.markdown("#### 🌍 SSelection of countries")
     macro_countries = st.multiselect(
-    "Choisir les pays à analyser",
+    "Choose the countries to analyze",
     ['USA', 'France', 'Germany', 'UK', 'China', 'Japan'],
     default=['USA', 'France', 'Germany', 'UK'])
     
@@ -1414,7 +1414,7 @@ elif st.session_state.page == 'equity_suite':
             width: 100%;
         }
         .dataframe-container th, .dataframe-container td {
-            border: 4px solid white !important;
+            border: 3px solid white !important;
             padding: 5px;
             text-align: right;
         }
