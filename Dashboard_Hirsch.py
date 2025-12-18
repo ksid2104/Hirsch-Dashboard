@@ -1414,7 +1414,7 @@ elif st.session_state.page == 'equity_suite':
             width: 100%;
         }
         .dataframe-container th, .dataframe-container td {
-            border: 3px solid white !important;
+            border: 5px solid white !important;
             padding: 5px;
             text-align: right;
         }
