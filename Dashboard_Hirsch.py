@@ -168,15 +168,18 @@ div[data-testid="stTextInput"] input {
     line-height: 1.6;
 }
 
-/* =================== Dataframe =================== */
-.dataframe-container .css-1lcbmhc {
+/* =================== DataFrame =================== */
+.dataframe-container table {
     background-color: #0A1929 !important; /* fond du tableau */
-    color: white !important;              /* texte */
+    color: white !important;               /* texte */
+    border-collapse: collapse;             /* évite les doubles bordures */
 }
 
-.dataframe-container .css-1lcbmhc td, 
-.dataframe-container .css-1lcbmhc th {
-    border: 1px solid white !important;   /* bordure des cellules */
+.dataframe-container th, 
+.dataframe-container td {
+    border: 2px solid white !important;   /* bordures plus épaisses */
+    padding: 5px;
+    text-align: right;
 }
 
 /* =================== Dividers =================== */
