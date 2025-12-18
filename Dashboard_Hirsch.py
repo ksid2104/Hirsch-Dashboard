@@ -6,7 +6,8 @@ from fredapi import Fred
 import yfinance as yf
 from datetime import datetime
 
-# Ajout de la fonction de formatage des grands nombres
+# Fonction de formattage des données 
+    # Ajout de la fonction de formatage des grands nombres
 def format_number(x):
     if x is None:
         return "N/A"
@@ -22,6 +23,12 @@ def format_number(x):
             return f"{x:.2f}"
     except:
         return str(x)
+    
+    # Fonction pour supprimer les heures des index de date
+def clean_index(df):
+    df_clean = df.copy()
+    df_clean.index = pd.to_datetime(df_clean.index).date
+    return df_clean
 
 # Configuration de la page
 st.set_page_config(
@@ -1200,7 +1207,7 @@ elif st.session_state.page == 'equity_suite':
         else:
             try:
                 tk = yf.Ticker(ticker)
-                hist = tk.history(period=selected_period)
+                hist = clean_index(tk.history(period=selected_period))
 
                 if hist.empty:
                     st.warning("Ticker invalid or data unavailable.")
@@ -1383,7 +1390,7 @@ elif st.session_state.page == 'equity_suite':
             "Type d'état financier",
             ["Income Statement", "Balance Sheet", "Cash Flow Statement"]
         )
-
+        
         def format_number(x):
             """Formate les nombres pour les rendre lisibles."""
             if pd.isna(x):
@@ -1442,6 +1449,7 @@ elif st.session_state.page == 'equity_suite':
                     st.warning("Données financières indisponibles.")
                 else:
                     # Formater les nombres pour l'affichage
+                    fs = clean_index(fs)
                     fs_formatted = format_fs_numbers(fs)
                     st.markdown("<div class='dataframe-container'>", unsafe_allow_html=True)
                     st.markdown(fs_formatted.to_html(), unsafe_allow_html=True)
