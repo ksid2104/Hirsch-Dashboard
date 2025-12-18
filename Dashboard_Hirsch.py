@@ -6,6 +6,23 @@ from fredapi import Fred
 import yfinance as yf
 from datetime import datetime
 
+# Ajout de la fonction de formatage des grands nombres
+def format_number(x):
+    if x is None:
+        return "N/A"
+    try:
+        x = float(x)
+        if x >= 1e9:
+            return f"{x/1e9:.2f}B"
+        elif x >= 1e6:
+            return f"{x/1e6:.2f}M"
+        elif x >= 1e3:
+            return f"{x/1e3:.2f}K"
+        else:
+            return f"{x:.2f}"
+    except:
+        return str(x)
+
 # Configuration de la page
 st.set_page_config(
     page_title="Hirsch Capital - Dashboard",
@@ -252,7 +269,6 @@ def unemployment_rate():
             'value': round(series.iloc[-1], 2),
             'variation': round(series.pct_change().iloc[-1] * 100, 2)
         }
-    
     return data, summary
 
 @st.cache_data(ttl=3600)
@@ -1226,7 +1242,7 @@ elif st.session_state.page == 'equity_suite':
                             st.metric("Forward P/E", info.get("forwardPE", "N/A"))
                             st.metric("Price to Book", info.get("priceToBook", "N/A"))
                             st.metric("Price to Sales (TTM)", info.get("priceToSalesTrailing12Months", "N/A"))
-                            st.metric("Enterprise Value", info.get("enterpriseValue", "N/A"))
+                            st.metric("Enterprise Value", format_number(info.get("enterpriseValue", "N/A")))  # <--- à formatter
                             st.metric("EV / Revenue", info.get("enterpriseToRevenue", "N/A"))
                             st.metric("EV / EBITDA", info.get("enterpriseToEbitda", "N/A"))
                             st.metric("PEG Ratio", info.get("trailingPegRatio", "N/A"))
@@ -1238,7 +1254,7 @@ elif st.session_state.page == 'equity_suite':
 
                     with col2:
 
-                        with st.expander("Profitability"):
+                        with st.expander("Profitability ratios"):
                             st.metric("Gross Margin", info.get("grossMargins", "N/A"))
                             st.metric("Operating Margin", info.get("operatingMargins", "N/A"))
                             st.metric("EBITDA Margin", info.get("ebitdaMargins", "N/A"))
@@ -1247,20 +1263,20 @@ elif st.session_state.page == 'equity_suite':
                             st.metric("Profit Margin", info.get("profitMargins", "N/A"))
 
                         with st.expander("Cash Flow & Balance Sheet"):
-                            st.metric("Total Revenue", info.get("totalRevenue", "N/A"))
-                            st.metric("EBITDA", info.get("ebitda", "N/A"))
-                            st.metric("Free Cash Flow", info.get("freeCashflow", "N/A"))
-                            st.metric("Operating Cash Flow", info.get("operatingCashflow", "N/A"))
-                            st.metric("Total Debt", info.get("totalDebt", "N/A"))
-                            st.metric("Total Cash", info.get("totalCash", "N/A"))
+                            st.metric("Total Revenue", format_number(info.get("totalRevenue", "N/A")))  # <--- à formatter
+                            st.metric("EBITDA", format_number(info.get("ebitda", "N/A")))  # <--- à formatter
+                            st.metric("Free Cash Flow", format_number(info.get("freeCashflow", "N/A")))  # <--- à formatter
+                            st.metric("Operating Cash Flow", format_number(info.get("operatingCashflow", "N/A")))  # <--- à formatter
+                            st.metric("Total Debt", format_number(info.get("totalDebt", "N/A")))  # <--- à formatter
+                            st.metric("Total Cash", format_number(info.get("totalCash", "N/A")))  # <--- à formatter
                             st.metric("Debt to Equity", info.get("debtToEquity", "N/A"))
                             st.metric("Current Ratio", info.get("currentRatio", "N/A"))
                             st.metric("Quick Ratio", info.get("quickRatio", "N/A"))
 
                         with st.expander("Market Sentiment"):
-                            st.metric("Target Low", info.get("targetLowPrice", "N/A"))
-                            st.metric("Target Mean", info.get("targetMeanPrice", "N/A"))
-                            st.metric("Target High", info.get("targetHighPrice", "N/A"))
+                            st.metric("Target Low", format_number(info.get("targetLowPrice", "N/A")))  # <--- à formatter
+                            st.metric("Target Mean", format_number(info.get("targetMeanPrice", "N/A")))  # <--- à formatter
+                            st.metric("Target High", format_number(info.get("targetHighPrice", "N/A")))  # <--- à formatter
                             st.write(f"**Recommendation:** {info.get('recommendationKey', 'N/A')}")
                             st.metric("Recommendation Mean", info.get("recommendationMean", "N/A"))
                             st.metric("# Analysts", info.get("numberOfAnalystOpinions", "N/A"))
@@ -1348,12 +1364,30 @@ elif st.session_state.page == 'equity_suite':
             key="fs_ticker"
         ).upper().strip()
 
-        # Mettre le fond de la selectbox en bleu foncé
         choice = st.selectbox(
-            "Type d’état financier",
+            "Type d'état financier",
             ["Income Statement", "Balance Sheet", "Cash Flow Statement"]
         )
 
+        def format_number(x):
+            """Formate les nombres pour les rendre lisibles."""
+            if pd.isna(x):
+                return "N/A"
+            elif abs(x) >= 1_000_000_000:
+                return f"{x/1_000_000_000:.2f} B"
+            elif abs(x) >= 1_000_000:
+                return f"{x/1_000_000:.2f} M"
+            elif abs(x) >= 1_000:
+                return f"{x/1_000:.2f} K"
+            else:
+                return f"{x:.2f}"
+
+        def format_fs_numbers(df):
+            """Formate toutes les valeurs numériques d'un DataFrame financier."""
+            df_formatted = df.copy()
+            for col in df_formatted.columns:
+                df_formatted[col] = df_formatted[col].apply(format_number)
+            return df_formatted
 
         if ticker_fs == "":
             st.info("Entrez un ticker pour afficher les états financiers.")
@@ -1371,8 +1405,11 @@ elif st.session_state.page == 'equity_suite':
                 if fs is None or fs.empty:
                     st.warning("Données financières indisponibles.")
                 else:
-                    st.dataframe(fs, use_container_width=True)
+                    # Formater les nombres pour l'affichage
+                    fs_formatted = format_fs_numbers(fs)
+                    st.dataframe(fs_formatted, use_container_width=True)
 
+                    # Bouton de téléchargement CSV
                     st.download_button(
                         "Télécharger CSV",
                         fs.to_csv().encode(),
