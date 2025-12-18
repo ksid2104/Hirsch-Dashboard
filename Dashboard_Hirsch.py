@@ -1207,7 +1207,7 @@ elif st.session_state.page == 'equity_suite':
         else:
             try:
                 tk = yf.Ticker(ticker)
-                hist = clean_index(tk.history(period=selected_period))
+                hist = tk.history(period=selected_period)
 
                 if hist.empty:
                     st.warning("Ticker invalid or data unavailable.")
@@ -1240,11 +1240,15 @@ elif st.session_state.page == 'equity_suite':
                     st.plotly_chart(fig, use_container_width=True)
 
                     st.markdown("#### Last observations")
+
+                    hist_clean= clean_index(hist)
+                    last_obs = hist_clean.tail(5)[["Open", "High", "Low", "Close", "Volume"]]
                     
                     st.markdown(
                         "<div class='dataframe-container'>"
-                        + hist.tail(5)[["Open", "High", "Low", "Close", "Volume"]].to_html(classes='table table-striped', border=0)
-                        + "</div>", unsafe_allow_html=True)
+                        + last_obs.to_html(classes='table table-striped', border=0)
+                        + "</div>", unsafe_allow_html=True
+                        )
                 
                     info = tk.info
                     st.markdown("#### Key Information")
