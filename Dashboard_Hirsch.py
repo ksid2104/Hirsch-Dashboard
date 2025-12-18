@@ -1452,8 +1452,7 @@ elif st.session_state.page == 'equity_suite':
                 if fs is None or fs.empty:
                     st.warning("Données financières indisponibles.")
                 else:
-                    # Formater les nombres pour l'affichage
-                    fs = clean_index(fs)
+                    # Formater les nombres pour l'affichage 
                     fs_formatted = format_fs_numbers(fs)
                     st.markdown("<div class='dataframe-container'>", unsafe_allow_html=True)
                     st.markdown(fs_formatted.to_html(), unsafe_allow_html=True)
