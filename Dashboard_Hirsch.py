@@ -1217,10 +1217,13 @@ elif st.session_state.page == 'equity_suite':
                         st.metric(f"Performance over {selected_period_label}", f"{perf:+.2f}%")
         
                     returns = hist["Close"].pct_change().dropna()
-                    delta_days = (hist.index[-1] - hist.index[0]).days / len(hist)
-                    annual_factor = 252 / delta_days  
-                    volatility = returns.std() * (annual_factor ** 0.5)
-                    st.metric(f"Volatility over {selected_period_label}", f"{volatility:.2%}")
+                    if len(returns) < 2:
+                        st.metric(f"Volatility over {selected_period_label}", "N/A")
+                        else:
+                        delta_days = (hist.index[-1] - hist.index[0]).days / len(hist)
+                        annual_factor = 252 / delta_days
+                        volatility = returns.std() * (annual_factor ** 0.5)
+                        st.metric(f"Volatility over {selected_period_label}", f"{volatility:.2%}")
 
                     fig = px.line(
                         hist,
