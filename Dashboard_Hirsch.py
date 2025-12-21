@@ -1215,19 +1215,10 @@ elif st.session_state.page == 'equity_suite':
                         st.metric("Last Price", f"{last_price:.2f}")
                     with colB:
                         st.metric(f"Performance over {selected_period_label}", f"{perf:+.2f}%")
-                    # Volatilité selon la periode séléctionnée
-                    def get_annualization_factor(period):
-                        # Détermine le nombre de périodes par an selon la fréquence
-                        if period in ['1d', '5d', '1wk']:
-                            return 252  # Rendements journalier
-                        elif period in ['1mo', '3mo']:
-                            return 12   # Rendements mensuels
-                        elif period in ['ytd', '1y', '2y', '5y', '10y', 'max']:
-                            return 252  # On peut approximer sur base quotidienne
-                        else:
-                            return 252
+        
                     returns = hist["Close"].pct_change().dropna()
-                    annual_factor = get_annualization_factor(selected_period)
+                    delta_days = (hist.index[-1] - hist.index[0]).days / len(hist)
+                    annual_factor = 252 / delta_days  
                     volatility = returns.std() * (annual_factor ** 0.5)
                     st.metric(f"Volatility over {selected_period_label}", f"{volatility:.2%}")
 
