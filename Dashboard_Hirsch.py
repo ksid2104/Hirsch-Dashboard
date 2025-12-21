@@ -1219,7 +1219,7 @@ elif st.session_state.page == 'equity_suite':
                     returns = hist["Close"].pct_change().dropna()
                     if len(returns) < 2:
                         st.metric(f"Volatility over {selected_period_label}", "N/A")
-                        else:
+                    else:
                         delta_days = (hist.index[-1] - hist.index[0]).days / len(hist)
                         annual_factor = 252 / delta_days
                         volatility = returns.std() * (annual_factor ** 0.5)
