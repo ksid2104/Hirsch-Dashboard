@@ -1215,10 +1215,10 @@ elif st.session_state.page == 'equity_suite':
                         st.metric("Last Price", f"{last_price:.2f}")
                     with colB:
                         st.metric(f"Performance over {selected_period_label}", f"{perf:+.2f}%")
-                    # Volatilité
+                    # Volatilité selon la periode séléctionnée
                     returns = hist["Close"].pct_change().dropna()
-                    volatility = returns.std() * (252 ** 0.5) * 100  # Annualized volatility
-                    st.metric("Annualized Volatility", f"{volatility:.2f}%")
+                    volatility = returns.std()
+                    st.metric(f"Volatility over {selected_period_label}", f"{volatility:.2%}")
 
                     fig = px.line(
                         hist,
